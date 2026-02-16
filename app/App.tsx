@@ -6,7 +6,7 @@ import Alert from './components/Alert';
 function App() {
   const [username, setUsername] = useState('');
   const [hasJoined, setHasJoined] = useState(false);
-  const { joinChat, error } = useChat();
+  const { messages, users, currentUser, error, joinChat, sendMessage, leaveChat } = useChat();
 
   const handleJoin = (e: FormEvent) => {
     e.preventDefault();
@@ -14,6 +14,12 @@ function App() {
       joinChat(username.trim());
       setHasJoined(true);
     }
+  };
+
+  const handleLogout = () => {
+    leaveChat();
+    setHasJoined(false);
+    setUsername('');
   };
 
   if (!hasJoined) {
@@ -55,7 +61,15 @@ function App() {
     );
   }
 
-  return <ChatContainer />;
+  return (
+    <ChatContainer
+      messages={messages}
+      users={users}
+      currentUser={currentUser}
+      sendMessage={sendMessage}
+      onLogout={handleLogout}
+    />
+  );
 }
 
 export default App;
